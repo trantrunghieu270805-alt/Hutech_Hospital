@@ -5,29 +5,29 @@
 
 <header>
     <nav class="navbar navbar-expand-lg fixed-top medical-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fa-solid fa-square-h"></i> HUTECH_Hospital
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand" href="/" style="padding: 0;">
+                <img src="~/uploads/doctors/logo-dai-hoc-hutech_chu.png" alt="HUTECH Hospital Logo" style="height: 45px; object-fit: contain;" />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMedical" aria-controls="navbarMedical" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between" id="navbarMedical">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium">
-                    <li class="nav-item mx-2">
-                        <a class="nav-link active rounded-pill px-3" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                    <li class="nav-item mx-1 mx-lg-2">
+                        <a class="nav-link rounded-pill @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
                     </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link rounded-pill px-3" asp-area="" asp-controller="Department" asp-action="Index">Chuyên Khoa</a>
+                    <li class="nav-item mx-1 mx-lg-2">
+                        <a class="nav-link rounded-pill @(ViewContext.RouteData.Values["controller"]?.ToString() == "Department" ? "active" : "")" asp-area="" asp-controller="Department" asp-action="Index">Chuyên Khoa</a>
                     </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link rounded-pill px-3" asp-area="" asp-controller="Doctor" asp-action="Index">Đội Ngũ Bác Sĩ</a>
+                    <li class="nav-item mx-1 mx-lg-2">
+                        <a class="nav-link rounded-pill @(ViewContext.RouteData.Values["controller"]?.ToString() == "Doctors" ? "active" : "")" asp-area="" asp-controller="Doctors" asp-action="Index">Đội Ngũ Bác Sĩ</a>
                     </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link rounded-pill px-3" asp-area="" asp-controller="ServicePrice" asp-action="Index">Bảng Giá Dịch Vụ</a>
+                    <li class="nav-item mx-1 mx-lg-2">
+                        <a class="nav-link rounded-pill @(ViewContext.RouteData.Values["controller"]?.ToString() == "ServicePrice" ? "active" : "")" asp-area="" asp-controller="ServicePrice" asp-action="Index">Bảng Giá Dịch Vụ</a>
                     </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link rounded-pill px-3 fw-bold text-primary bg-light shadow-sm ms-2" asp-area="" asp-controller="Appointment" asp-action="Create"><i class="fa-solid fa-stethoscope me-1"></i>ĐẶT LỊCH KHÁM</a>
+                    <li class="nav-item mx-1 mx-lg-2">
+                        <a class="btn btn-medical-outline ms-2" style="padding: 0.6rem 1.2rem;" asp-area="" asp-controller="Appointment" asp-action="Create"><i class="fa-solid fa-stethoscope"></i> ĐẶT LỊCH KHÁM</a>
                     </li>
                 </ul>
                 
@@ -81,7 +81,7 @@
                             <a class="nav-link" href="/Account/Login">Đăng nhập</a>
                         </li>
                         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                            <a class="btn btn-medical-primary btn-sm px-4 py-2" href="/Account/Register">Đăng ký</a>
+                            <a class="btn btn-medical-primary" style="padding: 0.6rem 1.5rem;" href="/Account/Register">Đăng ký</a>
                         </li>
                     }
                 </ul>
