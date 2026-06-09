@@ -64,6 +64,19 @@ namespace HUTECH_Hospital.Controllers
                     .OrderBy(s => s.WorkDate).ThenBy(s => s.StartTime).ToList();
             }
 
+            // Get all upcoming appointments for this doctor
+            var upcomingAppointments = await _context.Appointments
+                .Where(a => a.DoctorId == id && 
+                           a.AppointmentDate >= DateTime.Now.Date &&
+                           a.Status != "Cancelled")
+                .Include(a => a.Patient)
+                .Include(a => a.Department)
+                .OrderBy(a => a.AppointmentDate)
+                .ThenBy(a => a.AppointmentTime)
+                .ToListAsync();
+
+            ViewBag.UpcomingAppointments = upcomingAppointments;
+
             return View(doctor);
         }
     }
