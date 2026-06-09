@@ -3,124 +3,176 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Admin Hospital</title>
+    <title>@ViewData["Title"] - HUTECH Hospital System</title>
     
-    <!-- Bootstrap 5 & FontAwesome -->
+    <link rel="icon" type="image/png" href="~/uploads/doctors/logo-hutech.png" />
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- FontAwesome 6 Free Solid -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/hospital-ui.css" />
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Custom Admin Styles -->
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        #sidebarMenu { min-height: 100vh; box-shadow: 4px 0 10px rgba(0,0,0,0.05); }
-        .nav-link { border-radius: 10px; margin-bottom: 5px; color: rgba(255,255,255,0.8); transition: 0.3s; padding: 12px 20px;}
-        .nav-link:hover, .nav-link.active { background-color: rgba(255,255,255,0.1) !important; color: white; transform: translateX(5px); }
-        .admin-header { background: white; border-radius: 12px; padding: 15px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-    </style>
+    <link rel="stylesheet" href="~/css/admin.css" />
 </head>
-<body>
-    <div class="d-flex flex-nowrap">
+<body class="admin-bg">
+    <div class="admin-shell">
+        
         <!-- Sidebar -->
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 280px;" id="sidebarMenu">
-            <a href="/Admin" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-3">
-                <i class="fa-solid fa-hospital-symbol fs-2 text-primary me-3"></i>
-                <span class="fs-4 fw-bold">Admin Panel</span>
+        <aside class="admin-sidebar" id="adminSidebar">
+            <a href="/Admin" class="admin-sidebar-brand">
+                <img src="~/uploads/doctors/logo-hutech.png" alt="HUTECH Logo" />
+                <span>HUTECH<br>HOSPITAL</span>
             </a>
-            <hr>
-            <ul class="nav flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="/Admin" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Dashboard" ? "active" : "")">
-                        <i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan Admin
+            
+            <nav class="admin-nav">
+                <div class="admin-sidebar-section-title">Trang Chủ</div>
+                <div class="admin-nav-item">
+                    <a href="/Admin" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+                        Tổng quan Admin
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Department" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Department" ? "active" : "")">
-                        <i class="fa-solid fa-hospital-user me-2"></i>Quản lý Chuyên khoa
+                </div>
+                
+                <div class="admin-sidebar-section-title">Quản Trị Y Tế</div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Department" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-hospital-user"></i></span>
+                        Quản lý Chuyên khoa
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Doctor" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Doctor" ? "active" : "")">
-                        <i class="fa-solid fa-user-doctor me-2"></i>Vận hành Bác sĩ
+                </div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Doctor" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+                        Vận hành Bác sĩ
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/DoctorSchedule" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "DoctorSchedule" ? "active" : "")">
-                        <i class="fa-solid fa-calendar-alt me-2"></i>Phân ca lịch trực
+                </div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/DoctorSchedule" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                        Phân ca lịch trực
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Appointment" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Appointment" ? "active" : "")">
-                        <i class="fa-solid fa-calendar-check me-2"></i>Quản lý Phiếu Khám
+                </div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Appointment" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+                        Quản lý Phiếu khám
                     </a>
-                </li>
-                <!-- Phase 4 Additions -->
-                <li class="nav-item border-top mt-2 pt-2 border-secondary">
-                    <span class="ps-3 text-secondary small fw-bold text-uppercase">Nghiệp vụ Y khoa</span>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/MedicalRecord" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "MedicalRecord" ? "active" : "")">
-                        <i class="fa-solid fa-file-medical me-2"></i>Kho Hồ sơ EHR
+                </div>
+                
+                <div class="admin-sidebar-section-title">Nghiệp Vụ Lâm Sàng</div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/MedicalRecord" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-notes-medical"></i></span>
+                        Kho Hồ sơ EHR
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Medicine" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Medicine" ? "active" : "")">
-                        <i class="fa-solid fa-pills me-2"></i>Danh mục Thuốc
+                </div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Medicine" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-pills"></i></span>
+                        Danh mục Thuốc
                     </a>
-                </li>
-                <li class="nav-item border-top mt-2 pt-2 border-secondary">
-                    <span class="ps-3 text-secondary small fw-bold text-uppercase">Truyền thông & LH</span>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Notification" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Notification" ? "active" : "")">
-                        <i class="fa-solid fa-bullhorn me-2"></i>Gửi Thông báo
+                </div>
+                
+                <div class="admin-sidebar-section-title">Truyền Thông & CSKH</div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Notification" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-bell"></i></span>
+                        Gửi Thông báo
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Feedback" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Feedback" ? "active" : "")">
-                        <i class="fa-solid fa-comments me-2"></i>Phản hồi & CSKH
+                </div>
+                <div class="admin-nav-item">
+                    <a href="/Admin/Feedback" class="admin-nav-link">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-comments"></i></span>
+                        Phản hồi & CSKH
                     </a>
-                </li>
-                <li class="nav-item mt-4">
-                    <a href="/" class="nav-link text-info fw-bold" target="_blank">
-                        <i class="fa-solid fa-globe me-2"></i>Xem Website Bệnh Viện
+                </div>
+                
+                <div class="admin-sidebar-section-title">Hệ Thống</div>
+                <div class="admin-nav-item">
+                    <a href="/" class="admin-nav-link text-info" target="_blank">
+                        <span class="admin-nav-icon"><i class="fa-solid fa-globe"></i></span>
+                        Xem Website Bệnh viện
                     </a>
-                </li>
-            </ul>
-            <hr>
-            <div class="dropdown">
+                </div>
+            </nav>
+            
+            <div class="admin-sidebar-footer">
                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="w-100">
-                    <button type="submit" class="btn btn-outline-light w-100 rounded-pill"><i class="fa-solid fa-sign-out-alt me-2"></i>Đăng Xuất</button>
+                    <button type="submit" class="btn btn-light w-100 text-danger fw-bold rounded-pill shadow-sm py-2">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
+                    </button>
                 </form>
             </div>
-        </div>
-        
+        </aside>
+
         <!-- Main Content -->
-        <div class="flex-grow-1 p-4 bg-light overflow-auto" style="height: 100vh;">
-            <div class="admin-header d-flex justify-content-between align-items-center mb-4">
-                <h4 class="m-0 fw-bold text-dark">HUTECH HOSPITAL SYSTEM MANAGER</h4>
-                <div class="d-flex align-items-center">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height:40px;">
-                        <i class="fa-solid fa-user-shield"></i>
+        <main class="admin-main">
+            <!-- Topbar -->
+            <header class="admin-topbar glass-panel">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h4 class="topbar-title">HUTECH Hospital System Manager</h4>
+                </div>
+                
+                <div class="admin-profile-card">
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user-nurse"></i>
                     </div>
-                    <div>
-                        <div class="fw-bold lh-1 text-dark">@User.Identity?.Name</div>
-                        <small class="text-success"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Online</small>
+                    <div class="profile-info d-none d-md-flex">
+                        <span class="profile-name">@User.Identity?.Name</span>
+                        <span class="profile-status"><i class="fa-solid fa-circle"></i> Online</span>
                     </div>
                 </div>
-            </div>
-            
-            <main>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-container">
                 @RenderBody()
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/admin.js"></script>
+    
+    <!-- Fix script for new Sidebar DOM structure -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Update Active Menu logic for the new DOM structure (.admin-nav-link)
+            const currentPath = window.location.pathname.toLowerCase();
+            const menuLinks = document.querySelectorAll('.admin-nav-link');
+
+            menuLinks.forEach(link => {
+                const itemPath = link.getAttribute('href').toLowerCase();
+                link.classList.remove('active');
+
+                if (currentPath === itemPath) {
+                    link.classList.add('active');
+                } else if (itemPath !== '/admin' && currentPath.startsWith(itemPath + '/')) {
+                    link.classList.add('active');
+                }
+            });
+
+            if (currentPath === '/admin' || currentPath === '/admin/') {
+                const dashLink = document.querySelector('.admin-nav-link[href="/Admin"]');
+                if (dashLink) dashLink.classList.add('active');
+            }
+        });
+    </script>
+    
     @RenderSection("Scripts", required: false)
 </body>
 </html>
